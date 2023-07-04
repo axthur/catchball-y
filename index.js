@@ -8,18 +8,17 @@ const points = [
 
 // Define a gravidade
 let gravity = 0.5;
+let speed = 10;
 
 // Cria uma classe bola
 class Ball {
-    constructor(color, x, y, d, dx, dy, gravity, gravitySpeed) {
+    constructor(color, x, y, d, dx, dy) {
         this.color = color;
         this.x = x;
         this.y = y;
         this.d = d;
         this.dx = dx;
         this.dy = dy;
-        this.gravity = gravity;
-        this.gravitySpeed = gravitySpeed;
     }
 }
 
@@ -31,8 +30,8 @@ let initialHeight = canvas.height / 2;
 
 // Define os jogadores
 let players = [
-    new Ball('red', initialWidth, initialHeight, -1, 0, 0, gravity, 0),
-    new Ball('blue', initialWidth, initialHeight, -1, 0, 0, gravity, 0)
+    new Ball('red', initialWidth, initialHeight, -1, 0, 0),
+    new Ball('blue', initialWidth, initialHeight, -1, 0, 0)
 ];
 
 // Função para desenhar a bola no canvas
@@ -48,9 +47,11 @@ function drawBall(player) {
 function checkCollision() {
     players.forEach(
         player => {
-            let d = Math.sqrt(Math.pow(Math.abs((fruitX - player.x)), 2) + Math.pow(Math.abs((fruitY - player.y)), 2), 2);
+            let deltaX = player.x - fruitX;
+            let deltaY = player.y - fruitY;
+            let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            if (d <= ballRadius) {
+            if (distance <= ballRadius) {
                 var point = points[players.indexOf(player)];
                 var value = point.innerText;
                 value++;
@@ -65,10 +66,10 @@ function checkCollision() {
 function updatePosition() {
     players.forEach(
         player => {
-            player.gravitySpeed += player.gravity;
+            player.dy += gravity;
 
             player.x += player.dx;
-            player.y += player.dy + player.gravitySpeed;
+            player.y += player.dy;
 
             if (player.x + ballRadius >= canvas.width) {
                 player.x = canvas.width - ballRadius;
@@ -81,15 +82,7 @@ function updatePosition() {
             } else if (player.y < ballRadius) {
                 player.y = ballRadius;
             }
-        }
-    )
-}
 
-// Função para implementar gravidade
-function gravityManager() {
-    players.forEach(
-        player => {
-            player.gravitySpeed += player.gravity;
         }
     )
 }
@@ -130,37 +123,39 @@ function handleKeyDown(event) {
     // Player 0
     // Move para a esquerda
     if (event.keyCode === 65) {
-        players[0].dx = -4;
+        players[0].dx = -speed;
+        console.log(players[0].x);
     }
     // Move para cima
     else if (event.keyCode === 87) {
-        players[0].dy = -4;
+        players[0].dy = -speed;
     }
     // Move para a direita
     else if (event.keyCode === 68) {
-        players[0].dx = 4;
+        players[0].dx = speed;
+        console.log(players[0].x);
     }
     // Move para baixo
     else if (event.keyCode === 83) {
-        players[0].dy = 4;
+        players[0].dy = speed;
     }
 
     // Player 1
     // Move para a esquerda
     if (event.keyCode === 37) {
-        players[1].dx = -4;
+        players[1].dx = -speed;
     }
     // Move para cima
     else if (event.keyCode === 38) {
-        players[1].dy = -4;
+        players[1].dy = -speed;
     }
     // Move para a direita
     else if (event.keyCode === 39) {
-        players[1].dx = 4;
+        players[1].dx = speed;
     }
     // Move para baixo
     else if (event.keyCode === 40) {
-        players[1].dy = 4;
+        players[1].dy = speed;
     }
 }
 
