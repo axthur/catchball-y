@@ -1,7 +1,7 @@
 canvas {
     width: 600px;
     height: 600px;
-    background-image: url('/assets/background.jpg');
+    background: url('./assets/background.jpg');
     padding: 0;
     margin: auto;
     display: block;
