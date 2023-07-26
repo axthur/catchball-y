@@ -1,6 +1,7 @@
 // Obtém uma referência para o elemento canvas
 const canvas = document.getElementById('myCanvas');
 const context = canvas.getContext('2d');
+const sfx = document.getElementById('sfxPoint');
 const points = [
     document.getElementById('player0points'),
     document.getElementById('player1points')
@@ -56,6 +57,7 @@ function checkCollision() {
                 var value = point.innerText;
                 value++;
                 point.innerText = value;
+                sfx.play();
                 generateFruit();
             }
         }
